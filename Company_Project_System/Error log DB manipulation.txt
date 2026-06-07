@@ -1,0 +1,50 @@
+Error starting at line : 74 in command -
+INSERT INTO EMPLOYEES VALUES
+(1001, 'Ali', 'Hassan', DATE '1990-01-10', 'Male', NULL, NULL)
+Error at Command Line : 74 Column : 13
+Error report -
+SQL Error: ORA-01950: no privileges on tablespace 'USERS'
+
+https://docs.oracle.com/error-help/db/ora-01950/01950. 00000 -  "The user %s has insufficient quota on tablespace %s."
+*Cause:    The specified user does not have sufficient quota to
+           allocate space in the specified tablespace.
+*Action:   Use the ALTER USER QUOTA statement to allocate the necessary
+           quota on the tablespace for the user and retry.
+*Params:   1) user_name
+           extension.
+           2) tablespace_name: The tablespace name on which the user has no
+           quota.
+
+More Details :
+https://docs.oracle.com/error-help/db/ora-01950/
+
+
+
+SOLVED =====>> 
+	SQL> CONNECT sys/oracle@orclpdb AS SYSDBA
+	SQL> ALTER USER yarabdb QUOTA UNLIMITED ON USERS;
+	SQL> SELECT username, default_tablespace
+  		2  FROM dba_users
+  		3  WHERE username = 'YARABDB';
+	SQL> CONNECT yarabdb/yarabdb@orclpdb
+
+===================================================================================
+Error starting at line : 76 in command -
+INSERT INTO EMPLOYEES VALUES
+(1002, 'Sara', 'Ahmed', DATE '1992-05-20', 'Female', 1001, NULL)
+Error at Command Line : 77 Column : 60
+Error report -
+SQL Error: ORA-01400: cannot insert NULL into ("YARABDB"."EMPLOYEES"."D_NUM")
+
+https://docs.oracle.com/error-help/db/ora-01400/01400. 00000 -  "cannot insert NULL into (%s)"
+*Cause:    An attempt was made to insert NULL into previously listed objects.
+*Action:   These objects cannot accept NULL values. Reservable columns cannot
+           accept NULL values.
+
+More Details :
+https://docs.oracle.com/error-help/db/ora-01400/
+
+
+SOLVED ======>>
+ALTER TABLE EMPLOYEES
+MODIFY D_NUM NUMBER(10) NULL;
