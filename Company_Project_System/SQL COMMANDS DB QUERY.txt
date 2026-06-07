@@ -1,0 +1,107 @@
+SELECT F_name,
+       L_name,
+       Gender,
+       Birth_Date
+FROM EMPLOYEES;
+
+SELECT E.SSN,
+       E.F_name,
+       E.L_name,
+       E.D_NUM
+FROM EMPLOYEES E
+WHERE E.D_NUM = 10;
+
+SELECT E.F_name,
+       E.L_name,
+       D.D_name
+FROM EMPLOYEES E
+JOIN DEPARTMENT D
+    ON E.D_NUM = D.D_NUM
+WHERE D.D_name = 'IT';
+
+SELECT P_Name,
+       Location
+FROM PROJECTS;
+
+SELECT P.P_Name,
+       P.Location,
+       D.D_name
+FROM PROJECTS P
+JOIN DEPARTMENT D
+    ON P.D_NUM = D.D_NUM;
+    
+SELECT D.D_name,
+       E.F_name,
+       E.L_name,
+       E.Birth_Date
+FROM DEPARTMENT D
+JOIN EMPLOYEES E
+    ON D.SSN_manager = E.SSN;
+    
+SELECT D_Name,
+       Gender,
+       Birth_Name
+FROM DEPENDENTS
+WHERE SSN_employee = 1001;
+
+SELECT E.F_name,
+       E.L_name,
+       D.D_Name,
+       D.Gender
+FROM EMPLOYEES E
+JOIN DEPENDENTS D
+    ON E.SSN = D.SSN_employee
+WHERE E.SSN = 1001;
+
+SELECT E.F_name,
+       E.L_name,
+       W.Working_hours
+FROM EMPLOYEE_WORKING_ON_PROJECT W
+JOIN EMPLOYEES E
+    ON W.SSN = E.SSN
+WHERE W.P_NUM = 101;
+
+SELECT D.D_name,
+       DL.Locations
+FROM DEPARTMENT D
+JOIN DEPARTMENT_LOCATION DL
+    ON D.D_NUM = DL.D_NUM;
+    
+SELECT F_name,
+       L_name,
+       SSN_supervisor
+FROM EMPLOYEES
+WHERE SSN_supervisor = 1001;
+
+SELECT E.F_name,
+       E.L_name,
+       S.F_name AS Supervisor_First_Name,
+       S.L_name AS Supervisor_Last_Name
+FROM EMPLOYEES E
+JOIN EMPLOYEES S
+    ON E.SSN_supervisor = S.SSN
+WHERE S.SSN = 1001;
+
+SELECT P_NUM,
+       P_Name,
+       Location
+FROM PROJECTS
+WHERE D_NUM = 10;
+
+SELECT P.P_Name,
+       P.Location,
+       D.D_name
+FROM PROJECTS P
+JOIN DEPARTMENT D
+    ON P.D_NUM = D.D_NUM
+WHERE D.D_name = 'IT';
+
+SELECT D_Name,
+       Birth_Name
+FROM DEPENDENTS
+WHERE Gender = 'Female';
+
+SELECT D_Name,
+       Birth_Name
+FROM DEPENDENTS
+WHERE Gender = 'Male';
