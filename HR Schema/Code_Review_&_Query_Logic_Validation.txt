@@ -38,4 +38,10 @@ FROM employees e
 JOIN employees m
 ON e.employee_id = m.manager_id;
 -- Result
--- Correct
+-- Correct syntax opposite logic
+/* Previous shows manager name -> employee name, 
+    now shows employees name-> manager name*/
+SELECT e.first_name, m.first_name AS manager_name
+FROM employees e
+JOIN employees m
+ON e.manager_id = m.employee_id;
