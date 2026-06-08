@@ -1,0 +1,41 @@
+-- Query Review 1
+SELECT e.employee_id, d.department_id, e.first_name, e.last_name, d.department_name
+FROM employees e
+JOIN departments d
+ON e.employee_id = d.department_id;
+-- Result
+-- Correct
+----------------------------------
+-- Query Review 2
+SELECT e.first_name, e.last_name, j.job_title
+FROM employees e
+JOIN jobs j
+ON e.employee_id = j.job_id;
+-- Result
+-- Error: ORA-01722: invalid number
+-- Data type not match (employee_id is int and job_id is string)
+-- Correction (change in join statment)
+SELECT e.first_name, e.last_name, j.job_title
+FROM employees e
+JOIN jobs j
+ON e.job_id = j.job_id;
+----------------------------------
+-- Query Review 3
+SELECT e.first_name, d.department_name
+FROM employees e
+LEFT JOIN departments d
+ON e.department_id = d.department_id
+WHERE d.department_name = 'Sales';
+-- Result
+-- Correct
+/* The Best (no need to display the department name if we 
+    specify the department name in WHERE statment or remove 
+    the WHERE statment to be more realistic) */
+----------------------------------
+-- Query Review 4
+SELECT e.first_name, m.first_name AS manager_name
+FROM employees e
+JOIN employees m
+ON e.employee_id = m.manager_id;
+-- Result
+-- Correct
