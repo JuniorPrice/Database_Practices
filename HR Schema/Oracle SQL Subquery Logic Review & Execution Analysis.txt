@@ -1,0 +1,138 @@
+# Query Review 1:
+
+SELECT first_name, salary
+FROM employees
+WHERE salary > AVG(salary);
+
+This query will produce an error -> ORA-00934: group function is not allowed here (cannot use AVG inside WHERE)
+
+# Correct Version:
+
+SELECT first_name,
+       salary
+FROM employees
+WHERE salary >
+(
+    SELECT AVG(salary)
+    FROM employees
+);
+
+# Subquery Type : Single-row subquery.
+
+# Business Logic: Find employees earning more than the company average salary.
+
+==================================================
+# Query Review 2:
+
+SELECT department_name
+FROM departments
+WHERE department_id =
+(
+    SELECT department_id
+    FROM employees
+);
+
+This query produces an error -> ORA-01427: single-row subquery returns more than one row (subquery returns many rows).
+
+# Correct Version:
+
+SELECT department_name
+FROM departments
+WHERE department_id IN
+(
+    SELECT department_id
+    FROM employees
+);
+
+# Subquery Type: Multi-row subquery.
+
+# Business Logic: Find departments that currently have employees.
+
+==================================================
+# Query Review 3:
+
+SELECT *
+FROM employees
+WHERE department_id IN
+(
+    SELECT salary
+    FROM employees
+);
+
+The query may execute but the logic is incorrect -> Is department_id equal to any salary?
+
+# Correct Version:
+
+SELECT *
+FROM employees
+WHERE department_id IN
+(
+    SELECT department_id
+    FROM employees
+);
+
+# Subquery Type: Correlated Subquery.
+
+==================================================
+# Query Review 4:
+
+SELECT first_name
+FROM employees
+WHERE salary >
+(
+    SELECT salary
+    FROM employees
+    WHERE department_id = 90
+);
+
+This query will produce an error -> ORA-01427: single-row subquery returns more than one row (subquery returns many rows).
+
+# Correct Version:
+
+SELECT first_name,
+       salary
+FROM employees
+WHERE salary >
+(
+    SELECT MAX(salary)
+    FROM employees
+    WHERE department_id = 90
+);
+
+# Subquery Type: Multi-row subquery.
+
+# Business Logic: Employees earning above the average salary of department 90.
+
+==================================================
+==================================================
+## Final Reflection:
+
+-> Why subqueries are useful in enterprise HR reporting systems.
+	Subqueries allow reports to be built using intermediate results.
+
+-> The difference between JOIN-based thinking and subquery-based thinking.
+	JOIN-based: Focuses on combining related tables.
+	subquery-based: Focuses on filtering or comparing against another result set.
+
+-> Why some subqueries produce runtime errors.
+	Single-row subquery returns more than one row -> Occurs when: (= < >)
+	Group function is not allowed here -> Occurs when aggregates are used in invalid locations.
+	Data Type Mismatch -> creates logical problems.
+
+-> Why SQL execution order is important.
+	Oracle processes queries in this order:
+		1. FROM
+		2. WHERE
+		3. GROUP BY
+		4. HAVING
+		5. SELECT
+		6. ORDER BY
+	
+	Understanding execution order helps:
+		Avoid errors
+		Write efficient queries
+		Predict query behavior
+		Optimize enterprise reports
+
+-> Why understanding query logic is more valuable than memorizing syntax.
+	Syntax can be looked up quickly.
